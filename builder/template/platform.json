@@ -1,0 +1,21 @@
+			{
+				"name" : "${BOARD_NAME}",
+				"architecture" : "${BOARD_ARCH}",
+				"version" : "${_version}",
+				"category" : "${BOARD_CATEGORY}",
+				"url" : "${_url}",
+				"archiveFileName" : "${archiveFileName##*/}",
+				"checksum" : "SHA-256:${_sha}",
+				"size" : "${_size}",
+				"help" : {
+					"online" : "${BOARD_HELP_URL}"
+				},
+				"boards" : [
+					{
+						"name" : "${BOARD_NAME}"
+					}
+				],
+				"toolsDependencies" : [
+					${_tools_deps}
+				]
+			}
