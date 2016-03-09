@@ -860,6 +860,7 @@ while [ "$1" != "" ]; do
 			echo "Enter Version: "; read _version;
 			echo "Enter Commit#: "; read _commit;
 			add_new_release ${_version} ${_commit}
+			echo "new release added, please use build command to make a new package"
 			exit		
         ;;
         -h | --help )
