@@ -266,6 +266,21 @@ function generate_tools_template()
 #	git
 # -------------------------------------------------------------------------------------------
 
+
+function git_pull_repo()
+{
+	local _REPO_DIR = "${1}"
+
+	if check_dir_exists ${_REPO_DIR}
+	then
+		cd ${_REPO_DIR};
+		git pull --all
+	else
+		echo "directory is not a repo"
+	fi
+
+}
+
 function git_update_repo()
 {
 	if [ -d "${STAGING_DIR}/${REPO_SOURCE_LOCAL_DIR}" ] #if directory exists
@@ -440,7 +455,42 @@ function check_release_archive_exists()
 }
 
 
+function check_file_exists()
+{
+	local _FILE_NAME=${1}
+	
+	if [ -f "${_FILE_NAME}" ]
+	then
+		return 0 #true
+	else
+		return 1 #false
+	fi	
+}
 
+
+function check_folder_git()
+{
+	local _FOLDER_NAME=${1}
+	
+	if  check_dir_exists "${_FOLDER_NAME}/.git"
+	then
+		return 0 #true
+	else
+		return 1 #false
+	fi	
+}
+
+function check_dir_exists()
+{
+	local _FILE_NAME=${1}
+	
+	if [ -d "${_FILE_NAME}" ]
+	then
+		return 0 #true
+	else
+		return 1 #false
+	fi	
+}
 
 function check_config_exists()
 {
@@ -734,7 +784,7 @@ function git_reset_staging()
 
 while [ "$1" != "" ]; do
     case $1 in
-        -l | --list )   
+        -l | --list | list)   
 			check_config_exists ${2} 
 			list_release
 			exit
@@ -744,8 +794,13 @@ while [ "$1" != "" ]; do
 			make_packages
 			exit
 		;;
+        -e | --edit | edit )
+			check_config_exists "./${DEFAULT_CONFIG_FILE}"
+			vi "./${DEFAULT_CONFIG_FILE}"
+			exit
+		;;		
         -a | --add | add)
-			check_config_exists ${2}
+			check_config_exists "./${DEFAULT_CONFIG_FILE}"
 			config_info
 			list_release
 
@@ -769,7 +824,11 @@ while [ "$1" != "" ]; do
 			check_config_exists ${2}
 			git_push_release_pages
 	        exit
-        ;;           
+        ;; 
+        sync )
+			git_pull_repo
+	        exit
+        ;;                   
         init )
 			check_config_exists ${2}
 			git_init_release_pages
@@ -813,8 +872,35 @@ check_config_exists "./${DEFAULT_CONFIG_FILE}"
 
 # generate_tools_deps_template Digistump_SAM
 
+
+cat << "asciiart"
+                          (   (       )         
+  *   )                   )\ ))\ ) ( /(  *   )  
+` )  /(  (   (       (   (()/(()/( )\()` )  /(  
+ ( )(_))))\ ))\ (    )\ ) /(_)/(_)((_)\ ( )(_)) 
+(_(_())/((_/((_))\ )(()/((_))(_))   ((_(_(_())  
+|_   _(_))(_)) _(_/( )(_)| _ |_ _| / _ |_   _|  
+  | | / -_/ -_| ' \)| || |   /| | | (_) || |    
+  |_| \___\___|_||_| \_, |_|_|___| \___/ |_|    
+                     |__/                       
+
+                BUILD - TOOLS
+
+command:
+
+add     - add a new release
+build   - fetch remote repo and package board
+edit    - edit config file
+info    - get list of release and board url
+init    - init release page
+list    - get list of release
+publish - publish release to git pages
+sync    - sync build tools
+
+asciiart
+
 # echo $wew
 #generate_tools_template
-make_packages
+#make_packages
 
 #generate_boards_template BOARD_LIST
