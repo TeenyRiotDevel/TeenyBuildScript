@@ -349,6 +349,19 @@ function git_init_release_pages()
 	fi
 }
 
+function git_pull_release_pages()
+{
+	if check_folder_git "${RELEASES_DIR}/${RELEASE_REPO_DIR}"
+	then
+		cd ${RELEASES_DIR}/${RELEASE_REPO_DIR}
+		git pull origin gh-pages
+	else
+		git_init_release_pages
+	fi
+
+	cd ${cwd}
+}
+
 function git_push_release_pages()
 {
 
@@ -671,7 +684,8 @@ function build_push_config()
 
 function build_pull_config()
 {
-	git pull --all 
+	git pull --all
+	git_pull_release_pages
 }
 
 # -------------------------------------------------------------------------------------------
