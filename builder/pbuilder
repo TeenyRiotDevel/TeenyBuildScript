@@ -269,16 +269,20 @@ function generate_tools_template()
 
 function git_pull_repo()
 {
-	local _REPO_DIR = "${1}"
+	local _REPO_DIR="${1}"
 
-	if check_dir_exists ${_REPO_DIR}
+	if check_folder_git ${_REPO_DIR}
 	then
+		echo "git repo:${_REPO_DIR}"
 		cd ${_REPO_DIR};
 		git pull --all
+		return 0
 	else
 		echo "directory is not a repo"
+		return 1
 	fi
 
+	cd ${cwd}
 }
 
 function git_update_repo()
@@ -647,8 +651,25 @@ function list_release()
 
 
 # -------------------------------------------------------------------------------------------
+#	build function
+# -------------------------------------------------------------------------------------------
+
+function build_push_config()
+{
+	git add config.conf
+	git push origin master
+	git commit -m "update config"	
+}
+
+function build_pull_config()
+{
+	git pull --all 
+}
+
+# -------------------------------------------------------------------------------------------
 #	package builder
 # -------------------------------------------------------------------------------------------
+
 
 
 function make_packages()
@@ -825,10 +846,14 @@ while [ "$1" != "" ]; do
 			git_push_release_pages
 	        exit
         ;; 
-        sync )
-			git_pull_repo
+        pull )
+			build_pull_config
 	        exit
-        ;;                   
+        ;;   
+        push )
+			build_push_config
+	        exit
+        ;;                          
         init )
 			check_config_exists ${2}
 			git_init_release_pages
@@ -885,19 +910,25 @@ cat << "asciiart"
                      |__/                       
 
                 BUILD - TOOLS
-
-command:
-
-add     - add a new release
-build   - fetch remote repo and package board
-edit    - edit config file
-info    - get list of release and board url
-init    - init release page
-list    - get list of release
-publish - publish release to git pages
-sync    - sync build tools
+*--------------------------------------------------*
+|command - description                             |
+|--------------------------------------------------|
+|initpage - init release github page               |
+|add      - add a new release                      |
+|edit     - edit config file                       |
+|build    - fetch remote repo and package board    |
+|--------------------------------------------------|
+|publish  - publish release to git pages           |
+|--------------------------------------------------|
+|info     - get list of release and board url      |
+|list     - get list of release                    |
+|--------------------------------------------------|
+|pull     - sync build tools                       |
+|push     - sync build tools                       |
+*--------------------------------------------------*
 
 asciiart
+
 
 # echo $wew
 #generate_tools_template
