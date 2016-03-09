@@ -829,7 +829,7 @@ while [ "$1" != "" ]; do
 			echo "fetching latest config to avoid conflict"
 			build_pull_config
 
-			vi "./${DEFAULT_CONFIG_FILE}"
+			vi "./${DEFAULT_CONFIG_FILE}" +
 			exit
 		;;		
         -a | --add | add)
