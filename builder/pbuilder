@@ -657,8 +657,8 @@ function list_release()
 function build_push_config()
 {
 	git add config.conf
-	git push origin master
 	git commit -m "update config"	
+	git push origin master
 }
 
 function build_pull_config()
@@ -817,11 +817,19 @@ while [ "$1" != "" ]; do
 		;;
         -e | --edit | edit )
 			check_config_exists "./${DEFAULT_CONFIG_FILE}"
+
+			echo "fetching latest config to avoid conflict"
+			build_pull_config
+
 			vi "./${DEFAULT_CONFIG_FILE}"
 			exit
 		;;		
         -a | --add | add)
 			check_config_exists "./${DEFAULT_CONFIG_FILE}"
+
+			echo "fetching latest config to avoid conflict"
+			build_pull_config
+
 			config_info
 			list_release
 
