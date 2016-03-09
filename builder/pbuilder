@@ -351,22 +351,30 @@ function git_init_release_pages()
 
 function git_push_release_pages()
 {
-	if [ -d "${RELEASES_DIR}/${RELEASE_REPO_DIR}" ] #if directory exists
+
+	if check_folder_git "${RELEASES_DIR}/${RELEASE_REPO_DIR}"
 	then
-	
-	cd ${RELEASES_DIR}/${RELEASE_REPO_DIR}
+		if [ -d "${RELEASES_DIR}/${RELEASE_REPO_DIR}" ] #if directory exists
+		then
+		
+		cd ${RELEASES_DIR}/${RELEASE_REPO_DIR}
 
-	git add .
-	git commit -m "update release"
-	git push origin ${RELEASE_REPO_BRANCH}
+		git add .
+		git commit -m "update release"
+		git push origin ${RELEASE_REPO_BRANCH}
 
-	cd ${cwd}
+		cd ${cwd}
 
+		else
+
+		echo "git publish: directory ${RELEASES_DIR}/${RELEASE_REPO_DIR} is not exist!"
+		
+		fi
 	else
-
-	echo "git publish: directory ${RELEASES_DIR}/${RELEASE_REPO_DIR} is not exist!"
-	
+		git_init_release_pages
 	fi
+
+
 }
 
 # -------------------------------------------------------------------------------------------
@@ -862,7 +870,7 @@ while [ "$1" != "" ]; do
 			build_push_config
 	        exit
         ;;                          
-        init )
+        initpage )
 			check_config_exists ${2}
 			git_init_release_pages
 	        exit
@@ -917,7 +925,7 @@ cat << "asciiart"
   |_| \___\___|_||_| \_, |_|_|___| \___/ |_|    
                      |__/                       
 
-                BUILD - TOOLS
+              < BUILD _ TOOLS >
 *--------------------------------------------------*
 |command - description                             |
 |--------------------------------------------------|
