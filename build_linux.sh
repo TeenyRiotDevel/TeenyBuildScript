@@ -10,7 +10,7 @@ STAGING_DIR="./tools/staging"
 
 
 DESTINATION_REPO="../platform/avr/tools/avrdude"
-COMMIT_HASH="129f96f7"
+COMMIT_HASH="fa58e264"
 
 
 #ssh ${REMOTE} -p ${PORT} bash -c "'
@@ -45,6 +45,8 @@ make
 patchelf --set-rpath ./ ./avrdude
 patchelf --print-rpath ./avrdude
 
+mv ./avrdude ./avrdude_bin
+
 cp "/lib/libusb-0.1.so.4" .
 cp "/lib/libusb-1.0.so.0" .
 cp "/lib/libncurses.so.5" .
@@ -54,4 +56,4 @@ git log -1 > changelog.txt
 '"
 
 mkdir -p "${cwd}/${DESTINATION_REPO}/linux"
-scp -P ${PORT} ${REMOTE}:${REPO_DIR}/avrdude-6.0rc1/\{avrdude,changelog.txt,libusb-0.1.so.4,libusb-1.0.so.0,libncurses.so.5\} "${cwd}/${DESTINATION_REPO}/linux"
+scp -P ${PORT} ${REMOTE}:${REPO_DIR}/avrdude-6.0rc1/\{avrdude_bin,changelog.txt,libusb-0.1.so.4,libusb-1.0.so.0,libncurses.so.5\} "${cwd}/${DESTINATION_REPO}/linux"
