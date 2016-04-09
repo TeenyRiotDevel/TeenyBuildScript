@@ -9,8 +9,8 @@ REPO_DIR="/c/Users/BvSsh_VirtualUsers/AvrdudeGnusbuinoMidi2Kicker"
 STAGING_DIR="./tools/staging"
 
 
-DESTINATION_REPO="releases/AvrdudeGnusbuinoMidi2Kicker"
-COMMIT_HASH="129f96f7"
+DESTINATION_REPO="../platform/avr/tools/avrdude"
+COMMIT_HASH="cbe6bb316d75e56af490ba438e2a5bed0b0a96c8"
 
 #ssh ${REMOTE} -p ${PORT} bash -c "'
 #cd "${REPO_DIR}/avrdude-6.0rc1"
@@ -25,7 +25,7 @@ git fetch --all
 git pull --all
 git checkout ${COMMIT_HASH}
 git clean -dfx
-#git log -1
+git log -1
 #ls "${REPO_DIR}"
 
 cd "${REPO_DIR}/babygnusbsysex"

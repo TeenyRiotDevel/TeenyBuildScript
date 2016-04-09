@@ -9,7 +9,7 @@ STAGING_DIR="staging"
 REPO_DIR="${STAGING_DIR}/AvrdudeGnusbuinoMidi2Kicker"
 
 DESTINATION_REPO="../platform/avr/tools/avrdude"
-COMMIT_HASH="129f96f7"
+COMMIT_HASH="fa58e264"
 
 #rm -fr "${REPO_DIR}"
 mkdir -p "${cwd}/${REPO_DIR}"
